@@ -6,10 +6,30 @@ function pInfo(data) {
     return {
         id: data.data.id,
         name: data.data.name,
+        health: data.data.stats[0].base_stat,
         attack: data.data.stats[1].base_stat,
         sprites: data.data.sprites.other.dream_world.front_default,
         type: data.data.types.map((t) => t.type.name)
     }
+}
+
+function pInfoDetail(data) {
+    return {
+        id: data.data.id,
+        name: data.data.name,
+        health: data.data.stats[0].base_stat,
+        attack: data.data.stats[1].base_stat,
+        defense: data.data.stats[2].base_stat,
+        speed: data.data.stats[5].base_stat,
+        height: data.data.height,
+        weight: data.data.weight,
+        sprites: data.data.sprites.other.dream_world.front_default,
+        type: data.data.types.map((t) => t.type.name)
+    }
+}
+
+function pInfoType(data) {
+    return data.types.map((t) => t.dataValues.name)
 }
 
 async function getPokemonAPI() {
@@ -31,7 +51,31 @@ async function getPokemonAPI() {
     return array
 }
 
+async function getPokemonDb() {
+    let infoPDb = []
+    infoPDb = await Pokemon.findAll({
+        include: {
+            model: Type,
+            atributes: ["name"],
+            thorugh: {
+                atributes: []
+            }
+        }
+    })
+
+    infoPDb = infoPDb.map((p) => {
+        return {...p.dataValues, type: pInfoType(p.dataValues)}
+    })
+
+    return infoPDb.reverse()
+}
+
+// getPokemonAPI()
+
 module.exports={
     pInfo,
-    getPokemonAPI
+    pInfoDetail,
+    pInfoType,
+    getPokemonAPI,
+    getPokemonDb
 }
