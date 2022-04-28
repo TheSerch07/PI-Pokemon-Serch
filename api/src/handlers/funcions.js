@@ -23,7 +23,7 @@ function pInfoDetail(data) {
         speed: data.data.stats[5].base_stat,
         height: data.data.height,
         weight: data.data.weight,
-        sprites: data.data.sprites.other.dream_world.front_default,
+        img: data.data.sprites.other.dream_world.front_default,
         type: data.data.types.map((t) => t.type.name)
     }
 }
@@ -70,6 +70,16 @@ async function getPokemonDb() {
     return infoPDb.reverse()
 }
 
+async function postPokemonDb({ id, name, health, attack, defense, speed, height, weight, type, img }) {
+    const newPokemon = await Pokemon.create({id, name, health, attack, defense, speed, height, weight, img})
+    const typeDb = await Type.findAll({
+        where: {
+            name: type
+        }
+    })
+    await newPokemon.addTypes(typeDb)
+    return newPokemon
+}
 // getPokemonAPI()
 
 module.exports={
@@ -77,5 +87,6 @@ module.exports={
     pInfoDetail,
     pInfoType,
     getPokemonAPI,
-    getPokemonDb
+    getPokemonDb,
+    postPokemonDb
 }

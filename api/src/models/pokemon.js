@@ -44,6 +44,10 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1
+    },
+    img: {
+      type: DataTypes.TEXT,
+      allowNull: false
     }
   });
 };
