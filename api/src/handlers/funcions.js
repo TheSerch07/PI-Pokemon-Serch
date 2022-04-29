@@ -34,59 +34,70 @@ function pInfoType(data) {
 
 async function getPokemonAPI() {
     const info = await axios('https://pokeapi.co/api/v2/pokemon?limit=12')
-        // .then(r => r.json())
-        // .then(data => console.log(data.data.results))
-    // const infoP = [...info.data]
-    // await console.log( "ESTOOOO",info, "ES INFOPOOO")
-    // console.log(infoP, "info ppppp")
-    // return info
     const infoP = [...info.data.results]
     const infoPF = await Promise.all(
         infoP.map((p) => axios.get(p.url))
     )
-    let array = []
+    let arrayPokemonsApi = []
     infoPF.forEach((p) => {
-        array.push({...pInfo(p)})
+        arrayPokemonsApi.push({...pInfo(p)})
     })
-    return array
+    return arrayPokemonsApi
 }
+
+async function getPokemonApiName(name) {
+    const infoForName = await axios.get('https://pokeapi.co/api/v2/pokemon/' + name)
+    console.log(pInfo(infoForName))
+    return pInfo(infoForName)
+}
+
+// async function getPokemonDb(id) {
+//     // const infoPDb = []
+//     const infoPDb = await Pokemon.findByPk(id, {
+//         attributes: ['name']
+//     })
+//     console.log(infoPDb, "k esta pasando?")
+//     return infoPDb
+
+    // return infoPDb
+    
+    // infoPDb = infoPDb.map((p) => {
+    //     return {...p.dataValues, type: pInfoType(p.dataValues)}
+    // })
+    
+    // return infoPDb.reverse()
+// }
 
 async function getPokemonDb() {
-    let infoPDb = []
-    infoPDb = await Pokemon.findAll({
-        include: {
-            model: Type,
-            atributes: ["name"],
-            thorugh: {
-                atributes: []
-            }
-        }
-    })
-
-    infoPDb = infoPDb.map((p) => {
-        return {...p.dataValues, type: pInfoType(p.dataValues)}
-    })
-
-    return infoPDb.reverse()
+    const pokeDataBase = await Pokemon.findAll({})
+    return pokeDataBase
 }
+// const apiLlamada = await Pokemon.findByPk(id, {
+//     attributes: ["name"]
+// })
 
-async function postPokemonDb({ id, name, health, attack, defense, speed, height, weight, type, img }) {
-    const newPokemon = await Pokemon.create({id, name, health, attack, defense, speed, height, weight, img})
+// console.log(apiLlamada, "aaaaa")
+
+async function postPokemonDb({ name, health, attack, defense, speed, height, weight, type, img }) {
+    const newPokemon = await Pokemon.create({name, health, attack, defense, speed, height, weight, img})
     const typeDb = await Type.findAll({
         where: {
             name: type
         }
     })
-    await newPokemon.addTypes(typeDb)
+    await newPokemon.addType(typeDb)
     return newPokemon
 }
 // getPokemonAPI()
+
+// postPokemonDb("Poke2", 5, 5, 5, 5, 5, 5, "a", "a")
 
 module.exports={
     pInfo,
     pInfoDetail,
     pInfoType,
     getPokemonAPI,
+    getPokemonApiName,
     getPokemonDb,
     postPokemonDb
 }

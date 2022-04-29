@@ -20,7 +20,7 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: 1
     },
-    atack: {
+    attack: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1
@@ -46,7 +46,7 @@ module.exports = (sequelize) => {
       defaultValue: 1
     },
     img: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: false
     }
   });
