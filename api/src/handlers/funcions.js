@@ -1,6 +1,6 @@
 const { Pokemon, Type } = require("../db.js");
 // const fetch = require("node-fetch");
-const axios = require("axios")
+const axios = require("axios");
 
 function pInfo(data) {
     return {
@@ -51,32 +51,30 @@ async function getPokemonApiName(name) {
     return pInfo(infoForName)
 }
 
-// async function getPokemonDb(id) {
-//     // const infoPDb = []
-//     const infoPDb = await Pokemon.findByPk(id, {
-//         attributes: ['name']
-//     })
-//     console.log(infoPDb, "k esta pasando?")
-//     return infoPDb
-
-    // return infoPDb
-    
-    // infoPDb = infoPDb.map((p) => {
-    //     return {...p.dataValues, type: pInfoType(p.dataValues)}
-    // })
-    
-    // return infoPDb.reverse()
-// }
+async function getPokemonApiId(id) {
+    const infoForId = await axios.get('https://pokeapi.co/api/v2/pokemon/' + id)
+    return pInfoDetail(infoForId)
+}
 
 async function getPokemonDb() {
     const pokeDataBase = await Pokemon.findAll({})
     return pokeDataBase
 }
-// const apiLlamada = await Pokemon.findByPk(id, {
-//     attributes: ["name"]
-// })
 
-// console.log(apiLlamada, "aaaaa")
+async function getPokemonDbName(name) {
+    const pokeDataBaseName = await Pokemon.findOne({
+        include: Type,
+        where: {
+            name
+        }
+    })
+    return pokeDataBaseName
+}
+
+async function getPokemonDbId(id) {
+    const pokeDataBaseId = await Pokemon.findByPk(id)
+    return pokeDataBaseId
+}
 
 async function postPokemonDb({ name, health, attack, defense, speed, height, weight, type, img }) {
     const newPokemon = await Pokemon.create({name, health, attack, defense, speed, height, weight, img})
@@ -88,9 +86,6 @@ async function postPokemonDb({ name, health, attack, defense, speed, height, wei
     await newPokemon.addType(typeDb)
     return newPokemon
 }
-// getPokemonAPI()
-
-// postPokemonDb("Poke2", 5, 5, 5, 5, 5, 5, "a", "a")
 
 module.exports={
     pInfo,
@@ -98,6 +93,9 @@ module.exports={
     pInfoType,
     getPokemonAPI,
     getPokemonApiName,
+    getPokemonApiId,
     getPokemonDb,
+    getPokemonDbName,
+    getPokemonDbId,
     postPokemonDb
 }
