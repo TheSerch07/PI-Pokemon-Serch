@@ -57,7 +57,12 @@ async function getPokemonApiId(id) {
 }
 
 async function getPokemonDb() {
-    const pokeDataBase = await Pokemon.findAll({})
+    const pokeDataBase = await Pokemon.findAll({
+        include: {
+            model: Type,
+            attributes: ["name"]
+        }
+    })
     return pokeDataBase
 }
 
@@ -72,20 +77,46 @@ async function getPokemonDbName(name) {
 }
 
 async function getPokemonDbId(id) {
-    const pokeDataBaseId = await Pokemon.findByPk(id)
+    const pokeDataBaseId = await Pokemon.findByPk(id, {
+        include: {
+            model: Type
+        }
+    })
     return pokeDataBaseId
 }
 
-async function postPokemonDb({ name, health, attack, defense, speed, height, weight, type, img }) {
+async function postPokemonDb({ name, health, attack, defense, speed, height, weight, types, img }) {
     const newPokemon = await Pokemon.create({name, health, attack, defense, speed, height, weight, img})
     const typeDb = await Type.findAll({
         where: {
-            name: type
+            name: types
         }
     })
     await newPokemon.addType(typeDb)
     return newPokemon
 }
+
+async function getTypes() {
+    const typesInDb = await Type.findAll()
+    if (typesInDb.length < 1) {
+    const typesApi = await axios.get('https://pokeapi.co/api/v2/type')
+    const typesArray = typesApi.data.results.map((t) => {
+        return {
+            name: t.name
+        }
+    })
+    await Type.bulkCreate(typesArray)
+}
+}
+
+
+async function getTypesDb() {
+    let typesInDb = await Type.findAll()
+    // typesInDb = typesInDb.map((t) => {t.toJSON()})
+    console.log(typesInDb, "lo que estoy retornando")
+    return typesInDb
+}
+
 
 module.exports={
     pInfo,
@@ -97,5 +128,7 @@ module.exports={
     getPokemonDb,
     getPokemonDbName,
     getPokemonDbId,
-    postPokemonDb
+    postPokemonDb,
+    getTypes,
+    getTypesDb
 }
