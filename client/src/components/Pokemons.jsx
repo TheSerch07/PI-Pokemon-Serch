@@ -14,7 +14,7 @@ export default function Pokemons() {
     <div>
         {pokemons.map((pokemon) => {
             // console.log(pokemon)
-                return < Pokemon key={pokemon.id} name={pokemon.name} img={pokemon.sprites} health={pokemon.health} attack={pokemon.attack} />
+            return < Pokemon key={pokemon.id} name={pokemon.name} img={pokemon.sprites} health={pokemon.health} attack={pokemon.attack} />
         })}
     </div>
     )

@@ -1,7 +1,7 @@
 export default function Pokemon( {name, img, health, attack} ) {
-    console.log(health)
-    console.log(name)
-    console.log(img)
+    // console.log(health)
+    // console.log(name)
+    // console.log(img)
     return ( 
     <div>
         <h1>{name}</h1>

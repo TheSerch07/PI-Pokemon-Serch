@@ -1,4 +1,4 @@
-import { FETCH_POKEMON } from "../actions"
+import { FETCH_POKEMON, FETCH_POKEMON_NAME } from "../actions"
 
 const initialState = {
     pokemon: [],
@@ -8,6 +8,11 @@ const initialState = {
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case FETCH_POKEMON:
+            return {
+                ...state,
+                pokemon: action.payload
+            }
+        case FETCH_POKEMON_NAME:
             return {
                 ...state,
                 pokemon: action.payload
