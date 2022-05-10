@@ -10,4 +10,5 @@ export default function Pokemon( {name, img, health, attack} ) {
         <h1> Health: {health} </h1>
     </div>
     )
+    
 }
