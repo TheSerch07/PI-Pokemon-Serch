@@ -1,4 +1,4 @@
-export default function Pokemon( {name, img, health, attack} ) {
+export default function Pokemon( {name, img, health, attack, type} ) {
     // console.log(health)
     // console.log(name)
     // console.log(img)
@@ -8,6 +8,7 @@ export default function Pokemon( {name, img, health, attack} ) {
         <img src={img} alt="img" />
         <h1> Attack: {attack} </h1>
         <h1> Health: {health} </h1>
+        <h1> Types: {type}</h1>
     </div>
     )
     
