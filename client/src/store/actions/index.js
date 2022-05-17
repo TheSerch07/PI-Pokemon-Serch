@@ -1,6 +1,7 @@
 import axios from "axios"
 export const FETCH_POKEMON = "FETCH_POKEMON"
 export const FETCH_POKEMON_NAME = "FETCH_POKEMON_NAME"
+export const ORDER_ASC = "ORDER_ASC"
 
 export function fetchPokemons() {
     return function(dispatch) {
@@ -25,5 +26,12 @@ export function fetchPokemonsName(name) {
             })
         })
         .catch((err) => console.log(err))
+    }
+}
+
+export function orderAscendent(payload) {
+    return {
+        type: ORDER_ASC,
+        payload: payload
     }
 }
