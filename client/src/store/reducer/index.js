@@ -1,4 +1,4 @@
-import { FETCH_POKEMON, FETCH_POKEMON_NAME } from "../actions"
+import { FETCH_POKEMON, FETCH_POKEMON_NAME, ORDER_ASC } from "../actions"
 
 const initialState = {
     pokemon: [],
@@ -17,6 +17,11 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 pokemon: action.payload
             }
+        case ORDER_ASC:
+            return {
+                ...state
+            }
+
         default: 
             return state
     }
